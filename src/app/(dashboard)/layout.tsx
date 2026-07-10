@@ -19,12 +19,12 @@ export default async function DashboardLayout({
     <div style={{ minHeight: "100vh", backgroundColor: "var(--bg-alt)", display: "flex", flexDirection: "column" }}>
       {/* Dashboard Header */}
       <header style={{ backgroundColor: "#FFFFFF", borderBottom: "1px solid var(--border-subtle)", position: "sticky", top: 0, zIndex: 50 }}>
-        <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: "72px" }}>
+        <div className="container dashboard-header-inner" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: "72px" }}>
           <Link href="/" style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "1.25rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
             <div style={{ width: 32, height: 32, backgroundColor: "var(--color-primary)", color: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, borderRadius: "4px" }}>T</div>
-            Tech with Phantom
+            <span className="dashboard-logo-text">Tech with Phantom</span>
           </Link>
-          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <div className="dashboard-header-right" style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
             <Link 
               href="/courses" 
               className="dashboard-nav-link"
@@ -54,6 +54,14 @@ export default async function DashboardLayout({
         .dashboard-nav-link:hover { color: var(--color-primary) !important; }
         @media (max-width: 768px) {
           .dashboard-layout-grid { flex-direction: column !important; }
+          .dashboard-logo-text { display: none !important; }
+          .dashboard-header-inner {
+            height: 60px !important;
+            padding-inline: 1rem !important;
+          }
+          .dashboard-header-right {
+            gap: 0.75rem !important;
+          }
         }
       `}</style>
     </div>

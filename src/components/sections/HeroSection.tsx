@@ -24,7 +24,7 @@ export default function HeroSection() {
           className="hero-grid"
         >
           {/* Left — Copy */}
-          <div style={{ maxWidth: "560px" }}>
+          <div style={{ maxWidth: "560px" }} className="hero-copy">
             {/* Headline */}
             <h1
               className="reveal text-balance"
@@ -35,10 +35,10 @@ export default function HeroSection() {
 
             {/* Subheadline */}
             <p
-              className="reveal delay-100"
+              className="reveal delay-100 hero-subheadline"
               style={{
-                fontSize: "1.125rem",
-                color: "var(--text-primary)",
+                fontSize: "1rem",
+                color: "var(--text-secondary)",
                 marginBottom: "2rem",
                 lineHeight: 1.6,
               }}
@@ -48,7 +48,7 @@ export default function HeroSection() {
 
             {/* CTAs */}
             <div
-              className="reveal delay-200"
+              className="reveal delay-200 hero-ctas"
               style={{
                 display: "flex",
                 gap: "1rem",
@@ -277,9 +277,18 @@ export default function HeroSection() {
             gap: 2rem !important;
             padding-block: 3rem;
           }
+          .hero-copy {
+            max-width: 100% !important;
+            text-align: center;
+          }
+          .hero-ctas {
+            justify-content: center;
+          }
           .hero-visual {
             justify-content: center !important;
             margin-top: 2rem;
+            max-width: 320px !important;
+            margin-inline: auto !important;
           }
         }
       `}</style>
