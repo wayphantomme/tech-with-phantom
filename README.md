@@ -1,11 +1,12 @@
 # Tech with Phantom — Modern Online Course Platform
 
-> A full-stack LMS (Learning Management System) built with Next.js 16 App Router, Auth.js v5, Prisma 7, and Neon Postgres. Designed for course creators who want a clean, production-ready starter to[...]
+> A full-stack LMS (Learning Management System) built with Next.js 16 App Router, Auth.js v5, Prisma 7, and Neon Postgres. Designed for course creators who want a clean, production-ready starter to scale and manage their digital education business.
 
 Live demo: https://techwithphantom.vercel.app/
 
 ## Table of Contents
 - [Overview](#-overview)
+- [Screenshots](#-screenshots)
 - [Key Features](#-key-features)
 - [Architecture](#-architecture)
 - [Tech Stack](#-tech-stack)
@@ -27,6 +28,22 @@ Tech with Phantom is a full-stack LMS platform that includes:
 - An **LMS viewer** for authenticated learners
 - **Auth system** with Email/Password and Google OAuth
 - A **learner dashboard** with profile, orders, memberships, and settings pages
+
+---
+
+## 📸 Screenshots
+
+### Landing Page
+![Landing Page](./public/screenshots/twp-landing-page.png)
+The modern, responsive landing page showcasing the platform with hero section, features, and call-to-action.
+
+### Login Page
+![Login Page](./public/screenshots/twp-login.png)
+Clean authentication interface with email/password and Google OAuth options.
+
+### Course Directory
+![Course Directory](./public/screenshots/twp-courses.png)
+Browse and search through available courses with filtering and sorting capabilities.
 
 ---
 
@@ -334,6 +351,10 @@ The Prisma client is exposed as a singleton via `src/lib/db.ts` using the `@pris
 3. Set all environment variables in Vercel's project settings
 4. Deploy — Vercel auto-detects Next.js
 
-> **Important**: `DATABASE_URL` and `AUTH_SECRET` are required in production. For Google OAuth, also set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, and add `https://your-domain.com/api/auth/c[...]
+> **Important**: `DATABASE_URL` and `AUTH_SECRET` are required in production. For Google OAuth, also set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, and add `https://your-domain.com/api/auth/callback/google` to your Google Cloud Console redirect URIs.
 
 ---
+
+## 📄 License
+
+This project is open-source and available under the MIT License.
