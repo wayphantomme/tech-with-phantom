@@ -89,29 +89,31 @@ const Login1 = ({
         </Link>
 
         {/* Center copy */}
-        <div style={{ zIndex: 1 }}>
+        <div style={{ zIndex: 1, display: "flex", flexDirection: "column", justifyContent: "center", flex: 1, marginBlock: "3rem" }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: "8px",
             background: "rgba(255,255,255,0.1)",
             border: "1px solid rgba(255,255,255,0.15)",
             borderRadius: "999px",
             padding: "6px 16px",
-            fontSize: "0.8125rem", color: "rgba(255,255,255,0.85)",
+            fontSize: "0.8125rem", color: "rgba(255,255,255,0.9)",
             marginBottom: "1.5rem",
             backdropFilter: "blur(8px)",
+            width: "fit-content",
           }}>
             <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: "#4ade80", display: "inline-block" }} />
             Platform kelas online terbaik
           </div>
 
           <h2 style={{
-            fontSize: "2.25rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1.2,
+            fontSize: "2.5rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1.25,
             fontFamily: "var(--font-display, 'Plus Jakarta Sans', sans-serif)",
-            marginBottom: "1rem",
+            marginBottom: "1.25rem",
+            whiteSpace: "pre-line",
           }}>
-            {mode === "register" ? "Mulai perjalanan\nbelajarmu hari ini" : "Lanjutkan\nperjalanan\nbelajarmu"}
+            {mode === "register" ? "Mulai perjalanan\nbelajarmu hari ini" : "Lanjutkan perjalanan\nbelajarmu"}
           </h2>
-          <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.7, maxWidth: "320px", fontSize: "0.9375rem" }}>
+          <p style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.6, maxWidth: "380px", fontSize: "1rem" }}>
             {mode === "register"
               ? "Bergabung dengan ribuan pelajar yang sudah memulai karir di dunia teknologi bersama kami."
               : "Akses semua kelas Web Development dan AI yang sudah kamu beli. Belajar kapan saja, di mana saja."}

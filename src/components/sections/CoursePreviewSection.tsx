@@ -81,7 +81,9 @@ export default function CoursePreviewSection() {
                 border: "1px solid var(--border-subtle)",
                 position: "relative",
                 aspectRatio: "16/9",
-                background: "#E2E8F0", /* Slate-200 */
+                backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://res.cloudinary.com/dwsapeq3m/image/upload/v1783683580/full-stack-webdev_s062kv.png')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -100,7 +102,10 @@ export default function CoursePreviewSection() {
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: "pointer",
+                  transition: "transform 0.2s ease",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
                 }}
+                className="play-button"
               >
                 <div
                   style={{
@@ -113,7 +118,7 @@ export default function CoursePreviewSection() {
                   }}
                 />
               </div>
-              <div style={{ color: "var(--text-primary)", fontWeight: 700 }}>Tonton Video Preview</div>
+              <div style={{ color: "#FFFFFF", fontWeight: 700, textShadow: "0 2px 4px rgba(0,0,0,0.6)" }}>Tonton Video Preview</div>
             </div>
             
             <div

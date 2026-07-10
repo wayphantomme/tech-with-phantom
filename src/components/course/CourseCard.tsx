@@ -17,9 +17,16 @@ const courseLevels: Record<string, string> = {
   "fullstack-auth-payment": "Mahir",
 };
 
+const courseImages: Record<string, string> = {
+  "web-foundations": "https://res.cloudinary.com/dwsapeq3m/image/upload/v1783683580/module-1_ivunci.png",
+  "typescript-nextjs": "https://res.cloudinary.com/dwsapeq3m/image/upload/v1783683580/module-2_labhxu.png",
+  "fullstack-auth-payment": "https://res.cloudinary.com/dwsapeq3m/image/upload/v1783683581/module-3_l9vh1u.png",
+};
+
 export default function CourseCard({ course }: CourseCardProps) {
   const icon = courseIcons[course.slug] || "📚";
   const level = courseLevels[course.slug] || "Semua Level";
+  const imageUrl = courseImages[course.slug];
 
   return (
     <Link href={`/courses/${course.slug}`} style={{ textDecoration: "none", display: "block", height: "100%" }}>
@@ -38,7 +45,7 @@ export default function CourseCard({ course }: CourseCardProps) {
           backgroundColor: "#FFFFFF",
         }}
       >
-        {/* Course Thumbnail Placeholder */}
+        {/* Course Thumbnail */}
         <div
           style={{
             width: "100%",
@@ -50,9 +57,22 @@ export default function CourseCard({ course }: CourseCardProps) {
             fontSize: "3.5rem",
             position: "relative",
             borderBottom: "1px solid var(--border-subtle)",
+            overflow: "hidden",
           }}
         >
-          <span>{icon}</span>
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={course.title}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+          ) : (
+            <span>{icon}</span>
+          )}
           <div
             style={{
               position: "absolute",
