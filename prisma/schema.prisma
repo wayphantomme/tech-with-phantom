@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// -----------------------------------------------------------------------------
+// Auth.js Models
+// -----------------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(STUDENT)
+  
+  accounts      Account[]
+  sessions      Session[]
+  
+  // Relations to other entities
+  subscriptions Subscription[]
+  enrollments   Enrollment[]
+  progress      Progress[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// -----------------------------------------------------------------------------
+// Application Models (from PRD)
+// -----------------------------------------------------------------------------
+
+model Plan {
+  id              String   @id @default(cuid())
+  name            String
+  price_monthly   Int
+  price_yearly    Int
+  stripe_price_id String?
+  features        String?  // JSON string or comma-separated
+  
+  subscriptions   Subscription[]
+}
+
+model Subscription {
+  id                     String   @id @default(cuid())
+  userId                 String
+  planId                 String
+  status                 String   // e.g. "active", "canceled", "past_due"
+  current_period_end     DateTime
+  stripe_customer_id     String?
+  stripe_subscription_id String?
+  
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan                   Plan     @relation(fields: [planId], references: [id])
+}
+
+model Course {
+  id           String   @id @default(cuid())
+  title        String
+  description  String?
+  slug         String   @unique
+  is_published Boolean  @default(false)
+  
+  lessons      Lesson[]
+  enrollments  Enrollment[]
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  courseId    String
+  title       String
+  video_url   String?
+  is_preview  Boolean  @default(false)
+  order       Int      @default(0)
+  
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  progress    Progress[]
+}
+
+model Enrollment {
+  id          String   @id @default(cuid())
+  userId      String
+  courseId    String
+  started_at  DateTime @default(now())
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, courseId])
+}
+
+model Progress {
+  id          String   @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean  @default(false)
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, lessonId])
+}
