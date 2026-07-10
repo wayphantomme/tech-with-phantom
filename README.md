@@ -333,7 +333,3 @@ The Prisma client is exposed as a singleton via `src/lib/db.ts` using the `@pris
 > **Important**: `DATABASE_URL` and `AUTH_SECRET` are required in production. For Google OAuth, also set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, and add `https://your-domain.com/api/auth/callback/google` as an authorized redirect URI in Google Cloud Console.
 
 ---
-
-## 📝 License
-
-MIT
