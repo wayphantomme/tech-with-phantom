@@ -52,41 +52,106 @@ A starter platform that reduces time-to-market for creators and organizations se
 
 ## 🏗 Architecture
 
+### System Flow Diagram
+
 ```mermaid
 flowchart LR
-  Browser -->|HTTP(S)| NextJS[(Next.js App Router)]
-  NextJS -->|Route handlers / API| ServerLogic[Route Handlers / Actions (src/actions/*)]
-  ServerLogic --> Prisma[Prisma Client]
-  Prisma --> Postgres[(Postgres)]
-  NextJS -->|Static assets| Public[/public/]
-  NextJS -->|Auth| Auth[(src/auth.ts / src/auth.config.ts)]
-  Auth --> Prisma
+  A["Browser (User)"] -->|HTTP(S)| B[(Next.js App Router)]
+  B --> C[Route Handlers / Server Actions (src/actions/*)]
+  C --> D[Prisma Client (src/lib/db.ts)]
+  D --> E[(Postgres Database)]
+  B --> F[/public/static assets/]
+  B --> G[Auth (src/auth.ts / src/auth.config.ts)]
+  G --> D
 
-  subgraph Frontend
-    Browser
-  end
-
-  subgraph Backend
-    NextJS
-    ServerLogic
-    Prisma
-    Postgres
-  end
+  style A fill:#f3f4f6,stroke:#111827
+  style B fill:#3b82f6,stroke:#0369a1,color:#fff
+  style C fill:#10b981,stroke:#047857,color:#fff
+  style D fill:#f59e0b,stroke:#b45309,color:#fff
+  style E fill:#ef4444,stroke:#991b1b,color:#fff
+  style G fill:#8b5cf6,stroke:#6d28d9,color:#fff
 ```
 
-How it fits together
-- The Next.js App Router (src/app) serves pages (landing, courses, dashboard) and API route handlers.
-- Business logic lives in src/actions/* which calls Prisma via the wrapper in src/lib/db.ts.
-- Prisma maps to a Postgres database; seed.ts provides example data for development.
+### Content Generation Pipeline
+
+```mermaid
+sequenceDiagram
+    participant Cron as Cron Job / Scheduler
+    participant Generator as AI Engine (optional)
+    participant Unsplash as Unsplash API
+    participant DB as Database
+    participant Frontend as Next.js Frontend
+
+    Cron->>Generator: 1) Trigger content generation (topic, prompts)
+    activate Generator
+    Generator-->>Generator: 2) Generate title, slug, body, meta
+    Generator->>Unsplash: 3) Request relevant images
+    Unsplash-->>Generator: 4) Return image URL & metadata
+    deactivate Generator
+
+    Cron->>DB: 5) Insert generated content as draft/published
+    activate DB
+    DB-->>Cron: 6) Confirm stored
+    deactivate DB
+
+    Frontend->>DB: 7) Query posts
+    DB-->>Frontend: 8) Return posts
+    Frontend->>Frontend: 9) Render post list / detail
+```
+
+### Data Model
+
+```mermaid
+erDiagram
+    POSTS ||--o{ CATEGORY : belongs
+
+    POSTS {
+        int id PK
+        string title UK
+        string slug UK
+        text content
+        string meta_description
+        string image_url
+        string image_alt
+        string author
+        int category_id FK
+        timestamp created_at
+        timestamp published_at
+    }
+
+    CATEGORY {
+        int id PK
+        string name
+        string slug
+    }
+```
 
 ---
 
 ## 🛠️ Tech Stack
-- Language: TypeScript
-- Framework: Next.js (App Router)
-- ORM: Prisma (Postgres)
-- Styling: global CSS (src/app/globals.css) — add Tailwind if preferred
-- Dev tools: ESLint, TypeScript, npm
+
+### Frontend
+Layer	Tech
+Framework	Next.js 16 (App Router)
+Language	TypeScript
+Styling	Tailwind CSS 4
+Content	React Markdown + GFM
+Validation	Zod
+
+### Backend & Data
+Service	Tech
+ORM	Prisma 6
+Database	PostgreSQL (Neon)
+API	Next.js Route Handlers
+AI	Google Generative AI (Gemini 3.1 Flash)
+Images	Unsplash API
+
+### Infrastructure
+Aspect	Solution
+Hosting	Vercel
+CI/CD	Vercel Auto-Deploy
+Cron Jobs	Vercel Crons / External Scheduler
+Version Control	Git + GitHub
 
 ---
 
@@ -95,7 +160,7 @@ How it fits together
 ### Prerequisites
 - Node.js 18+
 - PostgreSQL (local or hosted)
-- Environment variables (see `.env.example` below)
+- env vars (see `.env.example`)
 
 ### Quick start
 
@@ -128,14 +193,6 @@ npx prisma db seed
 npm run dev
 ```
 Open http://localhost:3000
-
-### Recommended environment variables
-- DATABASE_URL=postgresql://user:password@host:port/dbname
-- NEXTAUTH_URL=http://localhost:3000
-- NEXTAUTH_SECRET=your_secret
-- NEXT_PUBLIC_SITE_URL=http://localhost:3000
-- SMTP_* (if email is used)
-- STRIPE_* (if payments planned)
 
 ---
 
@@ -212,9 +269,9 @@ MIT
 ---
 
 If you'd like, I can also:
-- add a `.env.example` with the recommended variables,
-- create `CONTRIBUTING.md` and PR/issue templates,
+- add a `CONTRIBUTING.md` with contribution guidelines,
+- create ISSUE/PR templates,
 - add a GitHub Actions workflow for lint/typecheck/build, or
-- add a Docker Compose file for Postgres-based local dev.
+- add a `docker-compose.yml` for Postgres-based local dev.
 
-Tell me which of the above you want me to add and I'll create the files.
+Tell me which you'd like and I'll create them.
