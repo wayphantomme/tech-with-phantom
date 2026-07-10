@@ -1,36 +1,152 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# tech-with-phantom
 
-## Getting Started
+Modern online course platform built with Next.js dan Prisma — starter kit untuk creator, bootcamp, dan tim product yang ingin meluncurkan kursus digital dengan cepat dan mudah diskalakan.
 
-First, run the development server:
+> Modern online course platform built with Next.js and Prisma, designed to easily scale and manage your digital education business.
+
+---
+
+## Ringkasan Bisnis
+
+Apa yang diselesaikan
+- Platform kursus online yang siap dipakai (landing page → course → dashboard peserta) untuk membantu creator dan institusi menjual kursus digital.
+
+Nilai utama
+- Launch cepat: template Next.js + Prisma dengan seed data untuk memulai.
+- Pengelolaan peserta: autentikasi, dashboard, dan kontrol akses untuk materi kursus.
+- Dapat dikembangkan: integrasi pembayaran, subscription, dan analytics.
+
+Target pengguna
+- Individual creators yang ingin menjual kursus berbayar.
+- Sekolah atau bootcamp kecil.
+- Tim produk yang butuh starter kit platform edukasi.
+
+Monetisasi (opsional)
+- One-time purchase, subscription, bundles, add-ons (sertifikat/coaching), affiliate.
+
+---
+
+## Ringkasan Teknis
+
+Stack
+- **Bahasa:** TypeScript
+- **Framework / runtime:** Next.js (App Router)
+- **Database / ORM:** PostgreSQL + Prisma
+- **Package manager:** npm (package.json ada di repo)
+
+Notable modules dan pola
+- src/app — Next.js App Router (halaman, layout, API route handlers)
+- src/actions — logic bisnis (auth.actions.ts, course.actions.ts)
+- src/auth.ts, src/auth.config.ts — konfigurasi dan helper autentikasi
+- src/lib/db.ts — Prisma client wrapper
+- prisma/schema.prisma & prisma/seed.ts — model DB dan seed data
+- skills/ — dokumen produk (design.md, prd.md, fullstack.md)
+
+Bagaimana komponen berinteraksi
+- Browser → Next.js App Router (src/app) → route handlers → src/actions/* → Prisma Client (src/lib/db.ts) → Postgres
+
+---
+
+## Diagram Arsitektur (Mermaid)
+
+```mermaid
+flowchart LR
+  Browser -->|GET/POST| NextJS[(Next.js App Router)]
+  NextJS -->|Route handlers / API| ServerLogic[Route Handlers / Actions (src/actions/*)]
+  ServerLogic --> Prisma[Prisma Client]
+  Prisma --> Postgres[(Postgres)]
+  NextJS -->|Static assets| Public[/public/]
+  NextJS -->|Auth| Auth[(src/auth.ts / auth.config.ts)]
+  Auth --> Prisma
+
+  subgraph Frontend
+    Browser
+  end
+
+  subgraph Backend
+    NextJS
+    ServerLogic
+    Prisma
+    Postgres
+  end
+```
+
+---
+
+## Cara Menjalankan (Local development)
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+2. Set environment variables (contoh):
+- DATABASE_URL (Postgres)
+- NEXTAUTH_URL (mis. http://localhost:3000)
+- NEXTAUTH_SECRET
+- NEXT_PUBLIC_SITE_URL
+- PROVIDER credentials (jika memakai OAuth)
+
+3. Prisma: generate & migrate
+
+```bash
+npx prisma generate
+npx prisma migrate dev --name init
+# jalankan seeder jika diperlukan
+npx prisma db seed
+```
+
+4. Jalankan dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# atau pnpm dev / yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Catatan: periksa src/auth.config.ts dan prisma.config.ts untuk variabel environment yang spesifik.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## File & Modul Penting
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app/layout.tsx` — global layout
+- `src/app/page.tsx` — landing page
+- `src/actions/course.actions.ts` — operasi course (create, fetch, enroll)
+- `src/actions/auth.actions.ts` — logic autentikasi
+- `src/auth.ts`, `src/auth.config.ts` — auth helper/config
+- `src/lib/db.ts` — prisma client wrapper
+- `prisma/schema.prisma`, `prisma/seed.ts`
+- `skills/*.md` — dokumentasi produk & design
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+Rekomendasi: deploy ke Vercel untuk kemudahan Next.js. Gunakan managed Postgres (Supabase, Neon, RDS).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Langkah singkat:
+- Pastikan env vars di Vercel (DATABASE_URL, NEXTAUTH_SECRET, dll)
+- Jalankan migration sebelum atau sebagai bagian dari deploy pipeline
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Pengembangan & Kontribusi
+
+- Lihat `skills/` untuk PRD dan keputusan desain.
+- Gunakan branch feature, sertakan PR yang mengacu ke PRD bila relevan.
+- Tambahkan test & CI (lint, typecheck, test) bila menambah fitur.
+
+---
+
+## Pertanyaan Tindak Lanjut
+
+1. Apakah ingin saya menambahkan `CONTRIBUTING.md` dan `.env.example`?
+2. Mau saya tambahkan contoh workflow GitHub Actions untuk CI (lint + build + migrate)?
+3. Ingin saya buatkan skrip Docker Compose untuk Postgres dan menjalankan dev secara containerized?
+
+---
+
+README ini dibuat/diupdate otomatis oleh GitHub Copilot berdasarkan struktur repo pada saat commit.
