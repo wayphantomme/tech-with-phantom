@@ -1,6 +1,6 @@
 # Tech with Phantom — Modern Online Course Platform
 
-> A full-stack LMS (Learning Management System) built with Next.js 16 App Router, Auth.js v5, Prisma 7, and Neon Postgres. Designed for course creators who want a clean, production-ready starter to sell and deliver online courses.
+> A full-stack LMS (Learning Management System) built with Next.js 16 App Router, Auth.js v5, Prisma 7, and Neon Postgres. Designed for course creators who want a clean, production-ready starter to[...]
 
 Live demo: https://techwithphantom.vercel.app/
 
@@ -46,6 +46,10 @@ Tech with Phantom is a full-stack LMS platform that includes:
 ## 🏗 Architecture
 
 ### System Flow
+
+![TWP Flow Diagram](./public/twp-flow.png)
+
+### Mermaid Architecture Diagram
 
 ```mermaid
 flowchart TD
@@ -330,6 +334,6 @@ The Prisma client is exposed as a singleton via `src/lib/db.ts` using the `@pris
 3. Set all environment variables in Vercel's project settings
 4. Deploy — Vercel auto-detects Next.js
 
-> **Important**: `DATABASE_URL` and `AUTH_SECRET` are required in production. For Google OAuth, also set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, and add `https://your-domain.com/api/auth/callback/google` as an authorized redirect URI in Google Cloud Console.
+> **Important**: `DATABASE_URL` and `AUTH_SECRET` are required in production. For Google OAuth, also set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, and add `https://your-domain.com/api/auth/c[...]
 
 ---
